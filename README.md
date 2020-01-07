@@ -1,2 +1,1 @@
-# mastering_rust
-Mastering Rust
+# Mastering Rust
