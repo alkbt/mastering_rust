@@ -11,12 +11,12 @@ const LETTERS_CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const DIGITS_COUNT: usize = 3;
 const DIGITS_CHARSET: &[u8] = b"1234567890";
 
-const TOTAL_NAMES_COUNT: u32 = 700_000;
+lazy_static! {
 
-// const TOTAL_NAMES_COUNT: u32 = LETTERS_CHARSET.len().pow(LETTERS_COUNT as u32) as u32
-//    + DIGITS_CHARSET.len().pow(DIGITS_COUNT as u32) as u32;
-//
-// error[E0015]: calls in constants are limited to constant functions, tuple structs and tuple variants
+    static ref TOTAL_NAMES_COUNT: u32 = LETTERS_CHARSET.len().pow(LETTERS_COUNT as u32) as u32
+        + DIGITS_CHARSET.len().pow(DIGITS_COUNT as u32) as u32;
+}
+
 
 pub struct Generator {
     bloom: BloomFilter,
@@ -26,7 +26,7 @@ pub struct Generator {
 impl Generator {
     pub fn new() -> GeneratorPtr {
         Arc::new(Mutex::new(Generator {
-            bloom: BloomFilter::with_rate(0.01, TOTAL_NAMES_COUNT),
+            bloom: BloomFilter::with_rate(0.01, *TOTAL_NAMES_COUNT),
             rng: rand::thread_rng(),
         }))
     }
